@@ -1,12 +1,17 @@
 /***********************************************************
- * Vehicle.hpp                                             *
+ * Road.hpp                                                *
  * The road class                                          *
  *                                                         *
  * Author: Artemy Belousov aka whimo                       *
  ***********************************************************/
 
+#ifndef ROAD_HPP
+#define ROAD_HPP
+
 #include <iostream>
 #include <vector>
+
+#include <cstdint>
 
 #include "Vehicle.hpp"
 
@@ -23,3 +28,5 @@ private:
 	std::vector <Lane> lanes;
 
 };
+
+#endif //ROAD_HPP
