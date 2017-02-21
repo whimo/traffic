@@ -8,9 +8,14 @@
 
 #include "Vehicle.hpp"
 
-Vehicle::Vehicle (double new_speed, double new_coord):
-	speed (new_speed),
-	coord (new_coord)
+#include <iostream>
+#include <cstdint>
+
+
+Vehicle::Vehicle (uint8_t new_lane, double new_coord, double new_speed):
+	lane_n (new_lane),
+	coord  (new_coord),
+	speed  (new_speed)
 	{}
 
 void Vehicle::move (double time)
@@ -21,4 +26,9 @@ void Vehicle::move (double time)
 double Vehicle::get_coord ()
 {
 	return coord;
+}
+
+int8_t Vehicle::get_lane ()
+{
+	return lane_n;
 }

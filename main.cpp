@@ -1,13 +1,14 @@
 #include <SFML/Graphics.hpp>
 
-#include "Road.hpp"
+#include "Road.cpp"
 #include "Vehicle.cpp"
 
 #include <iostream>
 #include <cstdint>
 
-const size_t WindowWidth = 32, WindowHeight = 512;
+const size_t WindowHeight = 512;
 
+const size_t LaneWidth = 20, DefaultLanesNum = 3;
 const size_t CarWidth = 16, CarLength = 64;
 
 
@@ -25,13 +26,13 @@ int main ()
 
 void mainloop ()
 {
-	sf::RenderWindow window (sf::VideoMode (WindowWidth, WindowHeight), "Traffic simulation");
+	sf::RenderWindow window (sf::VideoMode (LaneWidth * DefaultLanesNum, WindowHeight), "Traffic simulation");
 	window.setFramerateLimit (60);
+	window.setKeyRepeatEnabled (false);
 
 	sf::Clock clock;
 	
-	Lane lane;
-	lane.vehicles.push_back (Vehicle (10, 0));
+	Road road (DefaultLanesNum);
 
 	while (window.isOpen())
 	{
@@ -40,6 +41,29 @@ void mainloop ()
 		{
 			if (event.type  == sf::Event::Closed)
 				window.close ();
+
+			if (event.type == sf::Event::KeyPressed)
+			{
+				if (event.key.code == sf::Keyboard::S)
+				{
+					road.add_lane ();
+					window.setSize (sf::Vector2u (LaneWidth * road.get_lanes_num (), WindowHeight));
+					std::cout << (int) road.get_lanes_num () << std::endl;
+
+				}
+
+				if (event.key.code == sf::Keyboard::A)
+				{
+					int8_t lanes_num = road.get_lanes_num ();
+
+					if (lanes_num > 0)
+					{
+						road.remove_lane ();
+						window.setSize (sf::Vector2u (LaneWidth * lanes_num, WindowHeight));
+						std::cout << (int) road.get_lanes_num () << std::endl;
+					}
+				}
+			}
 		}
 
 		window.clear ();
@@ -47,26 +71,14 @@ void mainloop ()
 		sf::Time frame_time = clock.restart ();
 		int32_t time = frame_time.asMilliseconds ();
 
-		for (int i = 0; i < lane.vehicles.size (); i++)
-		{
-			sf::RectangleShape car (sf::Vector2f (CarWidth, CarLength));
+		road.render (&window, LaneWidth, time, CarWidth, CarLength, WindowHeight);
 
-			double position = lane.vehicles [i].get_coord ();
-
-			if (position > WindowHeight)
-			{
-				lane.vehicles.erase (lane.vehicles.begin () + i);
-				lane.vehicles.push_back (Vehicle (10, -int (CarLength)));
-			}
-
-			car.setPosition ((WindowWidth - CarWidth)/2, position);
+		/*Vehicle new_vehicle = Vehicle (rand () % road.get_lanes_num (),
+							   -double (CarLength), 10);
+		road.add_vehicle (new_vehicle);*/
 
 
-			window.draw (car);
 
-			lane.vehicles [i].move (time/100.0);
-		}
 		window.display ();
 	}
 }
-
