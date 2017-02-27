@@ -37,11 +37,12 @@ public:
 	int8_t get_lanes_num ();
 
 	void render (sf::RenderWindow* window, 
-				 size_t lane_width, 
-				 int32_t time, 
+				 size_t lane_width,
 				 size_t CarWidth = 16,
 				 size_t CarLength = 64,
 				 int window_height = -1);
+
+	void move (int32_t time);
 };
 
 #endif //ROAD_HPP

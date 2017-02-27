@@ -49,8 +49,7 @@ int8_t Road::get_lanes_num ()
 }
 
 void Road::render (sf::RenderWindow* window, 
-				   size_t lane_width, 
-				   int32_t time, 
+				   size_t lane_width,  
 				   size_t car_width,
 				   size_t car_length,
 				   int window_height)
@@ -61,9 +60,14 @@ void Road::render (sf::RenderWindow* window,
 	for (int i = 0; i < vehicles.size (); i++)
 	{
 		sf::RectangleShape vehicle_shape (sf::Vector2f (car_width, car_length));
-		vehicle_shape.setPosition ((lanes_num - 1) * lane_width + (lane_width - car_width)/2, window_height - vehicles [i].get_coord ());
+		vehicle_shape.setPosition ((vehicles [i].get_lane ()) * lane_width + (lane_width - car_width)/2, window_height - vehicles [i].get_coord ());
 
 		window -> draw (vehicle_shape);
-		vehicles [i].move (time/100);
 	}
+}
+
+void Road::move (int32_t time)
+{
+	for (int i = 0; i < vehicles.size (); i++)
+		vehicles [i].move (double (time)/100);
 }

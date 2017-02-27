@@ -17,7 +17,7 @@ private:
 	int8_t lane_n;
 
 	double speed;
-	double  coord;
+	double coord;
 
 public:
 	Vehicle (uint8_t new_lane, double new_coord, double new_speed);

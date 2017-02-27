@@ -9,7 +9,7 @@
 const size_t WindowHeight = 512;
 
 const size_t LaneWidth = 20, DefaultLanesNum = 3;
-const size_t CarWidth = 16, CarLength = 64;
+const size_t CarWidth = 16, CarLength = 32;
 
 
 void mainloop ();
@@ -34,6 +34,9 @@ void mainloop ()
 	
 	Road road (DefaultLanesNum);
 
+	int i = 0;
+	double density = 0.01;
+
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -47,7 +50,9 @@ void mainloop ()
 				if (event.key.code == sf::Keyboard::S)
 				{
 					road.add_lane ();
-					window.setSize (sf::Vector2u (LaneWidth * road.get_lanes_num (), WindowHeight));
+					int8_t lanes_num = road.get_lanes_num ();
+					window.setSize (sf::Vector2u (LaneWidth * lanes_num, WindowHeight));
+					window.setView(sf::View(sf::FloatRect(0, 0, LaneWidth * lanes_num, WindowHeight)));
 
 				}
 
@@ -59,8 +64,15 @@ void mainloop ()
 					{
 						road.remove_lane ();
 						window.setSize (sf::Vector2u (LaneWidth * (lanes_num - 1), WindowHeight));
+						window.setView(sf::View(sf::FloatRect(0, 0, LaneWidth * lanes_num, WindowHeight)));
 					}
 				}
+
+				if (event.key.code == sf::Keyboard::Z)
+					density = 1 / ((1/density) - 1);
+
+				if (event.key.code == sf::Keyboard::X)
+					density = 1 / ((1/density) + 1);
 			}
 		}
 
@@ -69,13 +81,19 @@ void mainloop ()
 		sf::Time frame_time = clock.restart ();
 		int32_t time = frame_time.asMilliseconds ();
 
-		road.render (&window, LaneWidth, time, CarWidth, CarLength, WindowHeight);
-
-		/*Vehicle new_vehicle = Vehicle (rand () % road.get_lanes_num (),
-							   -double (CarLength), 10);
-		road.add_vehicle (new_vehicle);*/
+		road.render (&window, LaneWidth, CarWidth, CarLength, WindowHeight);
+		road.move (time);
 
 
+		if (i % int (1 / density) == 0)
+		{
+			Vehicle new_vehicle = Vehicle (rand () % road.get_lanes_num (),
+								   0, 10);
+			road.add_vehicle (new_vehicle);
+		}
+
+
+		i++;
 
 		window.display ();
 	}
