@@ -48,7 +48,6 @@ void mainloop ()
 				{
 					road.add_lane ();
 					window.setSize (sf::Vector2u (LaneWidth * road.get_lanes_num (), WindowHeight));
-					std::cout << (int) road.get_lanes_num () << std::endl;
 
 				}
 
@@ -56,11 +55,10 @@ void mainloop ()
 				{
 					int8_t lanes_num = road.get_lanes_num ();
 
-					if (lanes_num > 0)
+					if (lanes_num > 1)
 					{
 						road.remove_lane ();
-						window.setSize (sf::Vector2u (LaneWidth * lanes_num, WindowHeight));
-						std::cout << (int) road.get_lanes_num () << std::endl;
+						window.setSize (sf::Vector2u (LaneWidth * (lanes_num - 1), WindowHeight));
 					}
 				}
 			}
