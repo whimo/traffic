@@ -42,7 +42,7 @@ public:
 				 size_t CarLength = 64,
 				 int window_height = -1);
 
-	void move (int32_t time);
+	void move (int32_t time, int32_t max_coord);
 };
 
 #endif //ROAD_HPP

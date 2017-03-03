@@ -66,8 +66,13 @@ void Road::render (sf::RenderWindow* window,
 	}
 }
 
-void Road::move (int32_t time)
+void Road::move (int32_t time, int32_t max_coord)
 {
 	for (int i = 0; i < vehicles.size (); i++)
+	{
 		vehicles [i].move (double (time)/100);
+
+		if (vehicles [i].get_coord () >= max_coord)
+			vehicles.erase (vehicles.begin () + i);
+	}
 }

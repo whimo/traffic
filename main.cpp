@@ -69,10 +69,15 @@ void mainloop ()
 				}
 
 				if (event.key.code == sf::Keyboard::Z)
-					density = 1 / ((1/density) - 1);
+					if (1/density > 1)
+						density = 1 / ((1/density) - 1);
+
+					std::cout << 1/density << std::endl;
 
 				if (event.key.code == sf::Keyboard::X)
 					density = 1 / ((1/density) + 1);
+					std::cout << 1/density << std::endl;
+
 			}
 		}
 
@@ -82,18 +87,20 @@ void mainloop ()
 		int32_t time = frame_time.asMilliseconds ();
 
 		road.render (&window, LaneWidth, CarWidth, CarLength, WindowHeight);
-		road.move (time);
+		road.move (time, WindowHeight + CarLength + 64);
 
 
-		if (i % int (1 / density) == 0)
+		if (i == int (1 / density))
 		{
 			Vehicle new_vehicle = Vehicle (rand () % road.get_lanes_num (),
 								   0, 10);
 			road.add_vehicle (new_vehicle);
+
+			i = 0;
 		}
 
-
 		i++;
+
 
 		window.display ();
 	}
