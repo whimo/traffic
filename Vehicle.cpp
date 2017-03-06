@@ -23,6 +23,11 @@ void Vehicle::move (double time)
 	coord += speed * time;
 }
 
+void Vehicle::set_speed (double new_speed)
+{
+	speed = new_speed;
+}
+
 double Vehicle::get_coord ()
 {
 	return coord;

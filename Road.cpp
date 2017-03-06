@@ -28,6 +28,21 @@ void Road::add_vehicle (Vehicle vehicle)
 	vehicles.push_back (vehicle);
 }
 
+Vehicle get_vehicle_in_front (Vehicle vehicle)
+{
+	Vehicle vehicle_in_front = NULL;
+
+	for (int i = 0; i < vehicles.size (); i++)
+	{
+		coord = vehicles [i].get_coord ();
+		if (vehicles [i].get_lane () == vehicle.get_lane () && coord > vehicle.get_coord ())
+			if (vehicle_in_front == NULL || coord < vehicle_in_front.get_coord ())
+				vehicle_in_front = vehicles [i];
+	}
+
+	return vehicle_in_front;
+}
+
 void Road::change_lanes (uint8_t new_lanes_num)
 {
 	lanes_num = new_lanes_num;
@@ -66,10 +81,15 @@ void Road::render (sf::RenderWindow* window,
 	}
 }
 
-void Road::move (int32_t time, int32_t max_coord)
+void Road::move (int32_t time, int32_t max_coord, double critical_distance)
 {
 	for (int i = 0; i < vehicles.size (); i++)
 	{
+		vehicle_in_front = get_vehicle_in_front (vehicles [i]);
+		if (vehicle_in_front != NULL)
+			if (vehicle_in_front.get_coord () - vehicles [i].get_coord () <= critical_distance)
+				vehicles [i].set_speed (vehicle_in_front.get_speed ())
+
 		vehicles [i].move (double (time)/100);
 
 		if (vehicles [i].get_coord () >= max_coord)

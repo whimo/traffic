@@ -53,7 +53,6 @@ void mainloop ()
 					int8_t lanes_num = road.get_lanes_num ();
 					window.setSize (sf::Vector2u (LaneWidth * lanes_num, WindowHeight));
 					window.setView(sf::View(sf::FloatRect(0, 0, LaneWidth * lanes_num, WindowHeight)));
-
 				}
 
 				if (event.key.code == sf::Keyboard::A)

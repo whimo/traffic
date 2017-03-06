@@ -29,6 +29,8 @@ public:
 	void add_vehicle (uint8_t lane, double coord, double speed);
 	void add_vehicle (Vehicle vehicle);
 
+	Vehicle get_vehicle_in_front (Vehicle vehicle);
+
 	void change_lanes (uint8_t new_lanes_num);
 
 	void add_lane    (uint8_t num = 1);

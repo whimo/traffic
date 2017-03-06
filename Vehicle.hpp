@@ -23,6 +23,7 @@ public:
 	Vehicle (uint8_t new_lane, double new_coord, double new_speed);
 
 	void move (double time);
+	void set_speed (double speed);
 
 	double get_coord ();
 	int8_t get_lane ();
